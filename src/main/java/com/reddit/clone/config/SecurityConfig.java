@@ -28,6 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/subreddit/**").permitAll()
+                .antMatchers("/v2/api-docs/**",
+                        "/configuration/ui",
+                        "/swagger.json",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated();
 

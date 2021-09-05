@@ -30,7 +30,7 @@ public class VerificationTokenService {
     @Transactional
     private void fetchUserAndEnable(Optional<VerificationToken> verificationToken) {
         String username = verificationToken.get().getUser().getUsername();
-        User user = userService.findByUserName(username).orElseThrow(() -> new SpringRedditException("User not found with username::" + username));
+        User user = userService.findByUserName(username);
         user.setEnabled(true);
         userService.save(user);
     }
