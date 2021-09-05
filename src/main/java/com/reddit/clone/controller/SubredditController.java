@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/subreddit")
 public class SubredditController {
@@ -34,6 +32,6 @@ public class SubredditController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getSubreddit(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(subRedditService.getSubreddit(id));
+        return ResponseEntity.status(HttpStatus.OK).body(subRedditService.getSubredditDto(id));
     }
 }

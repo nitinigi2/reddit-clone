@@ -25,7 +25,7 @@ public class SubredditService {
     public SubredditDto save(SubredditDto subredditDto) {
         Subreddit subreddit = mapToSubreddit(subredditDto);
 
-        Long id = subredditRepository.save(subreddit).getId();
+        Long id = subredditRepository.save(subreddit).getSubredditId();
         subredditDto.setId(id);
         return subredditDto;
     }
@@ -44,7 +44,7 @@ public class SubredditService {
                 .description(subreddit.getDescription())
                 .numberOfPosts(subreddit.getPosts().size())
                 .name(subreddit.getName())
-                .id(subreddit.getId())
+                .id(subreddit.getSubredditId())
                 .build();
     }
 
@@ -56,10 +56,21 @@ public class SubredditService {
                 .collect(Collectors.toList());
     }
 
-    public SubredditDto getSubreddit(Long id) {
-        Subreddit subreddit = subredditRepository.findById(id)
-                .orElseThrow(() -> new SpringRedditException("No Subreddit found with id = " + id));
-
+    public SubredditDto getSubredditDto(Long id) {
+        Subreddit subreddit = getSubreddit(id);
         return mapToDTO(subreddit);
+    }
+
+    public Subreddit getSubredditByName(String subredditName) {
+        Subreddit subreddit = subredditRepository.findByName(subredditName)
+                .orElseThrow(() -> new SpringRedditException("No Subreddit found with name = " + subredditName));
+
+        return subreddit;
+    }
+
+    public Subreddit getSubreddit(Long id) {
+        Subreddit subreddit = subredditRepository.findById(id)
+                .orElseThrow(() -> new SpringRedditException("No Subreddit found with given Id"));
+        return subreddit;
     }
 }
