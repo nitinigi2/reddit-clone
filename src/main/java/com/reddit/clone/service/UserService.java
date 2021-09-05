@@ -1,5 +1,6 @@
 package com.reddit.clone.service;
 
+import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.model.User;
 import com.reddit.clone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> findByUserName(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUserName(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new SpringRedditException("User not found with given username: " + username));
+        return user;
     }
 }

@@ -51,8 +51,7 @@ public class PostService {
     }
 
     public List<PostResponse> getPostsByUsername(String username) {
-        User user = userService.findByUserName(username)
-                .orElseThrow(() -> new SpringRedditException("User not found with given username: " + username));
+        User user = userService.findByUserName(username);
         return postRepository.findByUser(user).stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
