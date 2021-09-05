@@ -28,7 +28,7 @@ public class PostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPost(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(postService.getPost(id));
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getPostResponse(id));
     }
 
     @GetMapping

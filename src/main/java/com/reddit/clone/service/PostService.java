@@ -31,8 +31,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostResponse getPost(Long id) {
-        return mapToDto(postRepository.getById(id));
+    public PostResponse getPostResponse(Long id) {
+        return mapToDto(getPost(id));
+    }
+
+    @Transactional(readOnly = true)
+    public Post getPost(Long id){
+        return postRepository.findById(id)
+                .orElseThrow(() -> new SpringRedditException("Post not found with given id: " + id));
     }
 
     @Transactional(readOnly = true)
