@@ -1,5 +1,6 @@
 package com.reddit.clone.service;
 
+import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.reddit.clone.dto.PostRequest;
 import com.reddit.clone.dto.PostResponse;
 import com.reddit.clone.exception.SpringRedditException;
@@ -81,6 +82,13 @@ public class PostService {
                 .postName(post.getPostName())
                 .description(post.getDescription())
                 .subredditName(post.getSubreddit().getName())
+                .duration(getDuration(post))
+                .userName(post.getUser().getUsername())
+                .voteCount(post.getVoteCount())
                 .build();
+    }
+
+    public String getDuration(Post post) {
+        return TimeAgo.using(post.getCreatedDate().toEpochMilli());
     }
 }
