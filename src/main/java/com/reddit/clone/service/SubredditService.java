@@ -1,6 +1,7 @@
 package com.reddit.clone.service;
 
 import com.reddit.clone.dto.SubredditDto;
+import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.model.Subreddit;
 import com.reddit.clone.repository.SubredditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,12 @@ public class SubredditService {
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public SubredditDto getSubreddit(Long id) {
+        Subreddit subreddit = subredditRepository.findById(id)
+                .orElseThrow(() -> new SpringRedditException("No Subreddit found with id = " + id));
+
+        return mapToDTO(subreddit);
     }
 }
