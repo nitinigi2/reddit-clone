@@ -1,10 +1,11 @@
 package com.reddit.clone.service;
 
+import com.reddit.clone.config.RabbitMqConfig;
 import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.model.NotificationEmail;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,12 +17,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MailService {
 
-    @Autowired
     private final MailContentBuilder mailContentBuilder;
-    @Autowired
     private final JavaMailSender mailSender;
-
-    @Async
+    
+    @RabbitListener(queues = RabbitMqConfig.QUEUE_NAME)
     public void sendEmail(NotificationEmail notificationEmail) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("jijona2286@mom2kid.com");

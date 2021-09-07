@@ -38,6 +38,7 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
+    private final RabbitmqWithMailService rabbitmqWithMailService;
 
     private static final String EMAIL_BODY = "Thank you for signing up to Spring Reddit, " +
             "please click on the below url to activate your account : " +
@@ -56,12 +57,19 @@ public class AuthService {
         userService.save(user);
 
         String token = generateVerificationToken(user);
-        mailService.sendEmail(NotificationEmail
+        rabbitmqWithMailService.send(NotificationEmail
                 .builder()
                 .subject("Please activate your account")
                 .recipient(registerRequest.getEmail())
                 .body(EMAIL_BODY + token)
                 .build());
+
+//        mailService.sendEmail(NotificationEmail
+//                .builder()
+//                .subject("Please activate your account")
+//                .recipient(registerRequest.getEmail())
+//                .body(EMAIL_BODY + token)
+//                .build());
 
     }
 
