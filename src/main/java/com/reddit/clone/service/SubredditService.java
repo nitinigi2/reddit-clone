@@ -2,6 +2,7 @@ package com.reddit.clone.service;
 
 import com.reddit.clone.dto.SubredditDto;
 import com.reddit.clone.exception.SpringRedditException;
+import com.reddit.clone.exception.SubRedditNotFoundException;
 import com.reddit.clone.model.Subreddit;
 import com.reddit.clone.repository.SubredditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,14 +64,14 @@ public class SubredditService {
 
     public Subreddit getSubredditByName(String subredditName) {
         Subreddit subreddit = subredditRepository.findByName(subredditName)
-                .orElseThrow(() -> new SpringRedditException("No Subreddit found with name = " + subredditName));
+                .orElseThrow(() -> new SubRedditNotFoundException("No Subreddit found with name = " + subredditName));
 
         return subreddit;
     }
 
     public Subreddit getSubreddit(Long id) {
         Subreddit subreddit = subredditRepository.findById(id)
-                .orElseThrow(() -> new SpringRedditException("No Subreddit found with given Id"));
+                .orElseThrow(() -> new SubRedditNotFoundException("No Subreddit found with given Id"));
         return subreddit;
     }
 }

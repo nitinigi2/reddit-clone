@@ -32,7 +32,6 @@ public class MailService {
             log.info("Activation email sent successfully.");
         } catch (MailException e) {
             log.error("Something went wrong while sending email::::", e.getMessage());
-            throw new SpringRedditException(e.toString());
         }
 
     }

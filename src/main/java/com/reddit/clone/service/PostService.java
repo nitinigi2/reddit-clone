@@ -3,6 +3,7 @@ package com.reddit.clone.service;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.reddit.clone.dto.PostRequest;
 import com.reddit.clone.dto.PostResponse;
+import com.reddit.clone.exception.PostNotFoundException;
 import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.model.Post;
 import com.reddit.clone.model.User;
@@ -39,7 +40,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Post getPost(Long id){
         return postRepository.findById(id)
-                .orElseThrow(() -> new SpringRedditException("Post not found with given id: " + id));
+                .orElseThrow(() -> new PostNotFoundException("Post not found with given id: " + id));
     }
 
     @Transactional(readOnly = true)

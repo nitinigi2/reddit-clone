@@ -82,11 +82,9 @@ public class JwtTokenUtil implements Serializable {
         Claims claims = null;
         try{
             claims = Jwts.parser().setSigningKey(securityKey).parseClaimsJws(token).getBody();
-        }catch (SignatureException e){
-            throw new JwtTokenNotValidException(e);
         }catch (Exception e){
             log.debug(e.getMessage());
-            throw new SpringRedditException("Error occurred while getting claims from token");
+            throw new JwtTokenNotValidException("Error occurred while getting claims from token");
         }
         return claims;
     }
