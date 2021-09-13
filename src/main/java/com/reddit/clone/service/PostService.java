@@ -4,7 +4,6 @@ import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.reddit.clone.dto.PostRequest;
 import com.reddit.clone.dto.PostResponse;
 import com.reddit.clone.exception.PostNotFoundException;
-import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.model.Post;
 import com.reddit.clone.model.User;
 import com.reddit.clone.repository.PostRepository;

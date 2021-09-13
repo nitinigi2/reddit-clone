@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +45,7 @@ public class AuthService {
     private final Instant VERIFICATION_TOKEN_EXPIRATION_TIME = Instant.now().plus(3, ChronoUnit.DAYS); // 3 days from current instant
 
     @Transactional
-    public void signUp(RegisterRequest registerRequest) {
+    public User signUp(RegisterRequest registerRequest) {
         User user = User.builder()
                 .username(registerRequest.getUsername())
                 .password(encodePassword(registerRequest.getPassword()))
@@ -54,7 +53,7 @@ public class AuthService {
                 .created(Instant.now()) // current time
                 .enabled(false) // user is disabled initially
                 .build();
-        userService.save(user);
+        user = userService.save(user);
 
         String token = generateVerificationToken(user);
         rabbitmqWithMailService.send(NotificationEmail
@@ -64,6 +63,7 @@ public class AuthService {
                 .body(EMAIL_BODY + token)
                 .build());
 
+        return user;
 //        mailService.sendEmail(NotificationEmail
 //                .builder()
 //                .subject("Please activate your account")
@@ -106,7 +106,7 @@ public class AuthService {
     }
 
     private Authentication authenticate(String username, String password) throws Exception {
-        Authentication authentication = null;
+        Authentication authentication;
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {

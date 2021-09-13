@@ -1,7 +1,6 @@
 package com.reddit.clone.service;
 
 import com.reddit.clone.exception.JwtTokenNotValidException;
-import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.model.User;
 import com.reddit.clone.model.VerificationToken;
 import com.reddit.clone.repository.VerificationTokenRepository;
@@ -25,12 +24,12 @@ public class VerificationTokenService {
     public void findByToken(String token) {
         Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
         verificationToken.orElseThrow(() -> new JwtTokenNotValidException("Invalid Token"));
-        fetchUserAndEnable(verificationToken);
+        fetchUserAndEnable(verificationToken.get());
     }
 
     @Transactional
-    private void fetchUserAndEnable(Optional<VerificationToken> verificationToken) {
-        String username = verificationToken.get().getUser().getUsername();
+    private void fetchUserAndEnable(VerificationToken verificationToken) {
+        String username = verificationToken.getUser().getUsername();
         User user = userService.findByUserName(username);
         user.setEnabled(true);
         userService.save(user);

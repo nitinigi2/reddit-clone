@@ -2,12 +2,10 @@ package com.reddit.clone.security;
 
 import com.reddit.clone.dto.JwtResponse;
 import com.reddit.clone.exception.JwtTokenNotValidException;
-import com.reddit.clone.exception.SpringRedditException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -79,7 +77,7 @@ public class JwtTokenUtil implements Serializable {
 
     //for retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
-        Claims claims = null;
+        Claims claims;
         try{
             claims = Jwts.parser().setSigningKey(securityKey).parseClaimsJws(token).getBody();
         }catch (Exception e){

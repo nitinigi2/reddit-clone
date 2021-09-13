@@ -1,7 +1,6 @@
 package com.reddit.clone.service;
 
 import com.reddit.clone.dto.SubredditDto;
-import com.reddit.clone.exception.SpringRedditException;
 import com.reddit.clone.exception.SubRedditNotFoundException;
 import com.reddit.clone.model.Subreddit;
 import com.reddit.clone.repository.SubredditRepository;
@@ -63,15 +62,13 @@ public class SubredditService {
     }
 
     public Subreddit getSubredditByName(String subredditName) {
-        Subreddit subreddit = subredditRepository.findByName(subredditName)
-                .orElseThrow(() -> new SubRedditNotFoundException("No Subreddit found with name = " + subredditName));
 
-        return subreddit;
+        return subredditRepository.findByName(subredditName)
+                .orElseThrow(() -> new SubRedditNotFoundException("No Subreddit found with name = " + subredditName));
     }
 
     public Subreddit getSubreddit(Long id) {
-        Subreddit subreddit = subredditRepository.findById(id)
+        return subredditRepository.findById(id)
                 .orElseThrow(() -> new SubRedditNotFoundException("No Subreddit found with given Id"));
-        return subreddit;
     }
 }
