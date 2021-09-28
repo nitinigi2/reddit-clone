@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,10 +28,15 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity signUp(@RequestBody RegisterRequest registerRequest) {
         User user = authService.signUp(registerRequest);
         log.info("User is created:::" + user);
-        return new ResponseEntity<>("User registration successful. Please verify your mail", HttpStatus.CREATED);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getUserId())
+                .toUri();
+        return ResponseEntity.created(location).body("User registration successful. Please verify your mail");
     }
 
     @GetMapping("/accountVerification/{token}")
